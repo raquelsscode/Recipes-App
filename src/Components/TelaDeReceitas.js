@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import '../Style/TelaDeReceitas.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import requestFoods, { requestCategorys } from '../sevices/RequestAPI';
+import ReceitaCard from './ReceitaCard';
 
 export default class TelaDeReceitas extends Component {
   constructor() {
@@ -38,6 +39,7 @@ export default class TelaDeReceitas extends Component {
 
     render() {
       const { foodsArr, categoryArr } = this.state;
+      console.log(foodsArr);
       return (
         <div>
           <button
@@ -59,26 +61,13 @@ export default class TelaDeReceitas extends Component {
           ))}
           <div className="teste">
             {foodsArr.map((item, index) => (
-              <div
-                className="testeDois"
+              <ReceitaCard
                 key={ index }
-                data-testid={ `${index}-recipe-card` }
-              >
-                <img
-                  className="card-img-top"
-                  src={ item.strMealThumb }
-                  alt={ item.strMeal }
-                  width="200px"
-                  data-testid={ `${index}-card-img` }
-                />
-                <h2
-                  key={ item.strMeal }
-                  data-testid={ `${index}-card-name"` }
-                >
-                  {item.strMeal}
-
-                </h2>
-              </div>
+                id={ item.idMeal }
+                strMealThumb={ item.strMealThumb }
+                strMeal={ item.strMeal }
+                index={ index }
+              />
             ))}
           </div>
         </div>
