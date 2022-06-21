@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import '../Style/TelaDeReceitas.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import requestFoods, { requestCategorys } from '../sevices/RequestAPI';
 
 export default class TelaDeReceitas extends Component {
   constructor() {
@@ -12,23 +13,9 @@ export default class TelaDeReceitas extends Component {
     };
   }
 
-    requestFoods = async () => {
-      const URL = 'https://www.themealdb.com/api/json/v1/1/search.php?s=';
-      const data = await fetch(URL);
-      const response = await data.json();
-      return response;
-    };
-
-    requestCategorys = async () => {
-      const URL = 'https://www.themealdb.com/api/json/v1/1/list.php?c=list';
-      const data = await fetch(URL);
-      const response = await data.json();
-      return response;
-    };
-
     componentDidMount = async () => {
-      const foodValidator = await this.requestFoods();
-      const categoryValidator = await this.requestCategorys();
+      const foodValidator = await requestFoods();
+      const categoryValidator = await requestCategorys();
       const INDEX_FOOD = 11;
       const INDEX_CATEGORY = 4;
       this.setState({
@@ -40,7 +27,6 @@ export default class TelaDeReceitas extends Component {
 
     render() {
       const { foodsArr, categoryArr } = this.state;
-      console.log(categoryArr);
       return (
         <div>
           {categoryArr.map((category, index) => (
@@ -48,6 +34,7 @@ export default class TelaDeReceitas extends Component {
               data-testid={ `${category.strCategory}-category-filter` }
               type="button"
               key={ index }
+              onClick={ this.handleClick }
             >
               {category.strCategory}
             </button>
