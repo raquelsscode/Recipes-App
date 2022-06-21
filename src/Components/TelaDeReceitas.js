@@ -6,6 +6,7 @@ export default class TelaDeReceitas extends Component {
   constructor() {
     super();
     this.state = {
+      initialFoods: [],
       foodsArr: [],
       categoryArr: [],
 
@@ -26,6 +27,13 @@ export default class TelaDeReceitas extends Component {
       return response;
     };
 
+    filterAll = () => {
+      const { initialFoods } = this.state;
+      this.setState({
+        foodsArr: [...initialFoods],
+      });
+    };
+
     componentDidMount = async () => {
       const foodValidator = await this.requestFoods();
       const categoryValidator = await this.requestCategorys();
@@ -35,14 +43,26 @@ export default class TelaDeReceitas extends Component {
         foodsArr: foodValidator.meals.filter((_food, index) => index <= INDEX_FOOD),
         categoryArr: categoryValidator.meals
           .filter((_category, index) => index <= INDEX_CATEGORY),
+      }, () => {
+        const { foodsArr } = this.state;
+        this.setState({
+          initialFoods: [...foodsArr],
+        });
       });
     }
 
     render() {
-      const { foodsArr, categoryArr } = this.state;
-      console.log(categoryArr);
+      const { foodsArr, categoryArr, initialFoods } = this.state;
+      console.log(initialFoods);
       return (
         <div>
+          <button
+            data-testid="All-category-filter"
+            type="button"
+            onClick={ this.filterAll }
+          >
+            All
+          </button>
           {categoryArr.map((category, index) => (
             <button
               data-testid={ `${category.strCategory}-category-filter` }
