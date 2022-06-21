@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-// import '../Style/TelaDeReceitas.css';
+
+import '../Style/TelaDeReceitas.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import requestFoods, { requestCategorys } from '../services/RequestAPI';
-import Header from './Header';
+import requestFoods, { requestCategorys } from '../sevices/RequestAPI';
 
 export default class TelaDeReceitas extends Component {
   constructor() {
@@ -30,7 +30,6 @@ export default class TelaDeReceitas extends Component {
       const { foodsArr, categoryArr } = this.state;
       return (
         <div>
-          <Header />
           {categoryArr.map((category, index) => (
             <button
               data-testid={ `${category.strCategory}-category-filter` }
