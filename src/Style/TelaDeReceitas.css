@@ -1,0 +1,14 @@
+.testeDois {
+  border: 2px solid black;
+  margin: 20px;
+}
+
+.teste {
+  display: flex;
+  flex-wrap: wrap;
+  margin-left: 10%;
+}
+
+.card-img-top {
+  width: 300px;
+}
