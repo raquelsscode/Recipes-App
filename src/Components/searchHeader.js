@@ -24,13 +24,13 @@ class HeaderSearch extends Component {
 
   handleClickSubmit() {
     const { radioSelected, inputTextValue } = this.state;
-    if (radioSelected === 'ingredient') {
+    if (radioSelected === 'Ingredient') {
       requestIngredient(inputTextValue);
     }
-    if (radioSelected === 'name') {
+    if (radioSelected === 'Name') {
       requestName(inputTextValue);
     }
-    if (radioSelected === 'first-letter') {
+    if (radioSelected === 'First letter') {
       if (inputTextValue.length > 1) {
         global.alert('Your search must have only 1 (one) character');
       }
@@ -41,16 +41,16 @@ class HeaderSearch extends Component {
   render() {
     return (
       <form>
-        <label htmlFor="ingredient-search-radio">
+        <label htmlFor="Ingredient-search-radio">
           <input
             type="radio"
-            id="ingredient-search-radio"
+            id="Ingredient-search-radio"
             data-testid="ingredient-search-radio"
             name="search-type"
-            value="ingredient"
+            value="Ingredient"
             onClick={ this.handleClickRadio }
           />
-          Busca por ingrediente
+          Ingredient
         </label>
         <label htmlFor="name-search-radio">
           <input
@@ -58,10 +58,10 @@ class HeaderSearch extends Component {
             id="name-search-radio"
             name="search-type"
             data-testeid="name-search-radio"
-            value="name"
+            value="Name"
             onClick={ this.handleClickRadio }
           />
-          Busca por nome
+          Name
         </label>
         <label htmlFor="first-letter-search-radio">
           <input
@@ -69,10 +69,10 @@ class HeaderSearch extends Component {
             id="first-letter-search-radio"
             data-testeid="first-letter-search-radio"
             name="search-type"
-            value="first-letter"
+            value="First letter"
             onClick={ this.handleClickRadio }
           />
-          Busca da primeira letra
+          First letter
         </label>
         <input
           type="text"
