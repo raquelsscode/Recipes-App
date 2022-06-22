@@ -3,13 +3,16 @@ import Header from './Header';
 import Footer from './footer/Footer';
 import '../Style/TelaDeReceitas.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import requestFoods, { requestCategorys, requestEndPoint } from '../services/RequestAPI';
+import
+{ requestDrinks,
+  requestCategoryDrinks,
+  requestPointDrinks } from '../services/RequestAPI';
 
-export default class TelaDeReceitas extends Component {
+export default class TelaDeBebidas extends Component {
   constructor() {
     super();
     this.state = {
-      foodsArr: [],
+      drinksArr: [],
       categoryArr: [],
       category: '',
 
@@ -17,46 +20,48 @@ export default class TelaDeReceitas extends Component {
   }
 
     componentDidMount = async () => {
-      const foodValidator = await requestFoods();
-      const categoryValidator = await requestCategorys();
-      const INDEX_FOOD = 11;
+      const drinkValidator = await requestDrinks();
+      const categoryValidator = await requestCategoryDrinks();
+      const INDEX_DRINK = 11;
       const INDEX_CATEGORY = 4;
       this.setState({
-        foodsArr: foodValidator.meals.filter((_food, index) => index <= INDEX_FOOD),
-        categoryArr: categoryValidator.meals
+        drinksArr: drinkValidator.drinks.filter((_drink, index) => index <= INDEX_DRINK),
+        categoryArr: categoryValidator.drinks
           .filter((_category, index) => index <= INDEX_CATEGORY),
       });
     }
 
     handleClick = async ({ target }) => {
       const NUMBER = 11;
-      const comidas = ['Beef', 'Breakfast', 'Chicken', 'Dessert', 'Goat'];
+      const { categoryArr, category } = this.state;
+      const bebidas = await categoryArr.map((item) => item.strCategory);
       const { value } = target;
-      const { category } = this.state;
-      const foodValidator = await requestFoods();
+      const drinkValidator = await requestDrinks();
 
       if (value !== category) {
         this.setState({
           category: value,
         });
-        comidas.forEach(async (item) => {
-          const API = await requestEndPoint(item);
+        bebidas.forEach(async (item) => {
+          const drinks = await requestPointDrinks(item);
+
           if (value === item) {
             return this.setState(() => ({
-              foodsArr: (API.meals
-                .filter((_food, index) => index <= NUMBER)),
+              drinksArr: (drinks.drinks
+                .filter((_drink, index) => index <= NUMBER)),
             }));
           }
         });
       } else {
         this.setState({
-          foodsArr: foodValidator.meals.filter((_food, index) => index <= NUMBER),
+          drinksArr: drinkValidator.drinks.filter((_drink, index) => index <= NUMBER),
         });
       }
     };
 
     render() {
-      const { foodsArr, categoryArr } = this.state;
+      const { drinksArr, categoryArr } = this.state;
+      console.log(categoryArr);
       return (
         <div>
           <Header />
@@ -73,7 +78,7 @@ export default class TelaDeReceitas extends Component {
             </button>
           ))}
           <div className="teste">
-            {foodsArr.map((item, index) => (
+            {drinksArr.map((item, index) => (
               <div
                 className="testeDois"
                 key={ index }
@@ -81,16 +86,16 @@ export default class TelaDeReceitas extends Component {
               >
                 <img
                   className="card-img-top"
-                  src={ item.strMealThumb }
-                  alt={ item.strMeal }
+                  src={ item.strDrinkThumb }
+                  alt={ item.strDrink }
                   width="200px"
                   data-testid={ `${index}-card-img` }
                 />
                 <h2
-                  key={ item.strMeal }
+                  key={ item.strDrink }
                   data-testid={ `${index}-card-name` }
                 >
-                  {item.strMeal}
+                  {item.strDrink}
 
                 </h2>
               </div>
