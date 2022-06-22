@@ -12,4 +12,10 @@ export async function requestCategorys() {
   return response;
 }
 
+export async function requestEndPoint(EndPoint) {
+  const URL = `https://www.themealdb.com/api/json/v1/1/filter.php?c=${EndPoint}`;
+  const data = await fetch(URL);
+  const response = await data.json();
+  return response;
+}
 export default requestFoods;

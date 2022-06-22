@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import '../Style/TelaDeReceitas.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import requestFoods, { requestCategorys } from '../sevices/RequestAPI';
+import requestFoods, { requestCategorys, requestEndPoint } from '../sevices/RequestAPI';
 
 export default class TelaDeReceitas extends Component {
   constructor() {
@@ -9,6 +9,7 @@ export default class TelaDeReceitas extends Component {
     this.state = {
       foodsArr: [],
       categoryArr: [],
+      category: '',
 
     };
   }
@@ -25,6 +26,33 @@ export default class TelaDeReceitas extends Component {
       });
     }
 
+    handleClick = async ({ target }) => {
+      const NUMBER = 11;
+      const comidas = ['Beef', 'Breakfast', 'Chicken', 'Dessert', 'Goat'];
+      const { value } = target;
+      const { category } = this.state;
+      const foodValidator = await requestFoods();
+
+      if (value !== category) {
+        this.setState({
+          category: value,
+        });
+        comidas.forEach(async (item) => {
+          const API = await requestEndPoint(item);
+          if (value === item) {
+            return this.setState(() => ({
+              foodsArr: (API.meals
+                .filter((_food, index) => index <= NUMBER)),
+            }));
+          }
+        });
+      } else {
+        this.setState({
+          foodsArr: foodValidator.meals.filter((_food, index) => index <= NUMBER),
+        });
+      }
+    };
+
     render() {
       const { foodsArr, categoryArr } = this.state;
       return (
@@ -33,7 +61,9 @@ export default class TelaDeReceitas extends Component {
             <button
               data-testid={ `${category.strCategory}-category-filter` }
               type="button"
+              id="button"
               key={ index }
+              value={ category.strCategory }
               onClick={ this.handleClick }
             >
               {category.strCategory}
