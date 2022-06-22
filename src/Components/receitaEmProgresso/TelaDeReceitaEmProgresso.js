@@ -5,6 +5,10 @@ import whiteHeartIcon from '../../images/whiteHeartIcon.svg';
 import './TelaDeReceitaEmProgresso.css';
 
 export default class TelaDeReceitaEmProgresso extends React.Component {
+  handleInput = ({ target }) => {
+    target.parentNode.classList.toggle('markedIngredient');
+  }
+
   render() {
     const ingredients = ['1', '2', '3'];
     return (
@@ -40,6 +44,7 @@ export default class TelaDeReceitaEmProgresso extends React.Component {
                 <input
                   id={ ingredient }
                   type="checkbox"
+                  onClick={ this.handleInput }
                   data-testid={ `${index}-ingredient-step` }
                 />
                 { ingredient }
