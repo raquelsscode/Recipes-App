@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+
 import '../Style/TelaDeReceitas.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import requestFoods, { requestCategorys, requestEndPoint } from '../sevices/RequestAPI';
