@@ -13,7 +13,7 @@ const Footer = () => (
     <Link to="/explore">
       <img src={ exploreIcon } alt="Explore Icon" data-testid="explore-bottom-btn" />
     </Link>
-    <Link to="/food">
+    <Link to="/foods">
       <img src={ mealIcon } alt="Meal Icon" data-testid="food-bottom-btn" />
     </Link>
   </div>
