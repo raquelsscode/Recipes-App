@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Header from './Header';
 import Footer from './footer/Footer';
+import DrinksCard from './DrinksCard';
 import '../Style/TelaDeReceitas.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import
@@ -12,12 +13,18 @@ export default class TelaDeBebidas extends Component {
   constructor() {
     super();
     this.state = {
+      initialDrinks: [],
       drinksArr: [],
       categoryArr: [],
       category: '',
 
     };
   }
+
+  filterAll = () => {
+    const { initialDrinks } = this.state;
+    this.setState({ drinksArr: [...initialDrinks] });
+  };
 
     componentDidMount = async () => {
       const drinkValidator = await requestDrinks();
@@ -28,6 +35,12 @@ export default class TelaDeBebidas extends Component {
         drinksArr: drinkValidator.drinks.filter((_drink, index) => index <= INDEX_DRINK),
         categoryArr: categoryValidator.drinks
           .filter((_category, index) => index <= INDEX_CATEGORY),
+      }, () => {
+        const { drinksArr } = this.state;
+        console.log(drinksArr);
+        this.setState({
+          initialDrinks: [...drinksArr],
+        });
       });
     }
 
@@ -61,10 +74,18 @@ export default class TelaDeBebidas extends Component {
 
     render() {
       const { drinksArr, categoryArr } = this.state;
-      console.log(categoryArr);
       return (
         <div>
           <Header />
+
+          <button
+            data-testid="All-category-filter"
+            type="button"
+            onClick={ this.filterAll }
+          >
+            All
+          </button>
+
           {categoryArr.map((category, index) => (
             <button
               data-testid={ `${category.strCategory}-category-filter` }
@@ -79,26 +100,13 @@ export default class TelaDeBebidas extends Component {
           ))}
           <div className="teste">
             {drinksArr.map((item, index) => (
-              <div
-                className="testeDois"
+              <DrinksCard
                 key={ index }
-                data-testid={ `${index}-recipe-card` }
-              >
-                <img
-                  className="card-img-top"
-                  src={ item.strDrinkThumb }
-                  alt={ item.strDrink }
-                  width="200px"
-                  data-testid={ `${index}-card-img` }
-                />
-                <h2
-                  key={ item.strDrink }
-                  data-testid={ `${index}-card-name` }
-                >
-                  {item.strDrink}
-
-                </h2>
-              </div>
+                id={ item.idDrink }
+                strDrinkThumb={ item.strDrinkThumb }
+                strDrink={ item.strDrink }
+                index={ index }
+              />
             ))}
           </div>
           <Footer />
