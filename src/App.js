@@ -5,6 +5,8 @@ import Login from './Components/Login';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import TelaDeReceitas from './Components/TelaDeReceitas';
+import TelaDeReceitaEmProgresso
+from './Components/receitaEmProgresso/TelaDeReceitaEmProgresso';
 
 function App() {
   return (
@@ -12,6 +14,7 @@ function App() {
       <Switch>
         <Route exact path="/foods" component={ TelaDeReceitas } />
         <Route exact path="/" component={ Login } />
+        <Route exact path="/receitaemprogresso" component={ TelaDeReceitaEmProgresso } />
       </Switch>
     </div>
   );

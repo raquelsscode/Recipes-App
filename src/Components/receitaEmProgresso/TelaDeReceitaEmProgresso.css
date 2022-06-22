@@ -1,0 +1,10 @@
+.shareButton, .favoriteButton {
+  background-color: white;
+  border: none;
+}
+
+.wrapperTitleButton {
+  display: flex;
+  justify-content: space-between;
+  width: 450px;
+}
