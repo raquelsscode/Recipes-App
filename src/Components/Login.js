@@ -1,5 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import '../App.css';
+import rockGlass from '../images/rockGlass.svg';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 class Login extends React.Component {
   constructor() {
@@ -50,35 +53,46 @@ class Login extends React.Component {
     render() {
       const { email, password, btnDisabled } = this.state;
       return (
-        <div>
-          <form>
-            <input
-              type="email"
-              name="email"
-              value={ email }
-              data-testid="email-input"
-              placeholder="Insira seu Email"
-              onChange={ this.handleChange }
-            />
-            <input
-              type="password"
-              name="password"
-              value={ password }
-              data-testid="password-input"
-              onChange={ this.handleChange }
-              placeholder="Insira sua senha"
-            />
-            <button
-              type="submit"
-              data-testid="login-submit-btn"
-              disabled={ btnDisabled }
-              onClick={ this.handleClick }
-            >
-              Enter
-            </button>
+        <section>
 
-          </form>
-        </div>
+          <div className="meals">
+            <span className="logo">Receitas</span>
+            <object
+              className="rocksGlass"
+              type="image/svg+xml"
+              data={ rockGlass }
+            >
+              Glass
+            </object>
+            <form>
+              <input
+                type="email"
+                name="email"
+                value={ email }
+                data-testid="email-input"
+                placeholder="Insira seu Email"
+                onChange={ this.handleChange }
+              />
+              <input
+                type="password"
+                name="password"
+                value={ password }
+                data-testid="password-input"
+                onChange={ this.handleChange }
+                placeholder="Insira sua senha"
+              />
+              <button
+                type="submit"
+                data-testid="login-submit-btn"
+                disabled={ btnDisabled }
+                onClick={ this.handleClick }
+              >
+                Enter
+              </button>
+
+            </form>
+          </div>
+        </section>
       );
     }
 }
