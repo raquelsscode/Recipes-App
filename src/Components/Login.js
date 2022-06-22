@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import '../App.css';
-import rockGlass from '../images/rockGlass.svg';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import rockGlass from '../images/rockGlass.svg';
 
 class Login extends React.Component {
   constructor() {
