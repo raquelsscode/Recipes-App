@@ -13,6 +13,11 @@ function App() {
     <div>
       <Switch>
         <Route exact path="/foods" component={ TelaDeReceitas } />
+        {/* <Route
+          exact
+          path="/foods/:id/in-progress"
+          component={ TelaDeReceitaEmProgresso }
+        /> */}
         <Route exact path="/" component={ Login } />
         <Route exact path="/receitaemprogresso" component={ TelaDeReceitaEmProgresso } />
       </Switch>

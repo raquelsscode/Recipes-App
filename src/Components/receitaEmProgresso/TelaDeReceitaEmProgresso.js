@@ -5,12 +5,62 @@ import whiteHeartIcon from '../../images/whiteHeartIcon.svg';
 import './TelaDeReceitaEmProgresso.css';
 
 export default class TelaDeReceitaEmProgresso extends React.Component {
+  constructor() {
+    super();
+
+    this.state = {
+      // cocktails: {},
+      meals: {},
+    };
+  }
+
+  saveMarkedIngredient = (ID, name) => {
+    console.log(ID);
+    this.setState((prevState) => ({
+      meals: {
+        ...prevState.meals,
+        [ID]: [...prevState.meals[ID], name],
+      },
+    }));
+  }
+
   handleInput = ({ target }) => {
+    // const inProgressRecipesObj = JSON.parse(localStorage.getItem('inProgressRecipes'));
     target.parentNode.classList.toggle('markedIngredient');
+
+    const ID = 52772;
+    const { name } = target;
+    const { meals } = this.state;
+
+    if (!meals[ID]) {
+      this.setState(({
+        meals: { [ID]: [] },
+      }), () => {
+        this.saveMarkedIngredient(ID, name);
+      });
+    } else {
+      this.saveMarkedIngredient(ID, name);
+    }
+  }
+
+  componentDidMount = () => {
+    if (!localStorage.getItem('inProgressRecipes')) {
+      const inProgressRecipes = {
+        cocktails: {
+        },
+        meals: {
+        },
+      };
+
+      localStorage.setItem('inProgressRecipes', JSON.stringify(inProgressRecipes));
+    }
   }
 
   render() {
-    const ingredients = ['1', '2', '3'];
+    const ingredients = [
+      { id: 0, name: 'penne rigate' },
+      { id: 1, name: 'olive oil' },
+      { id: 2, name: 'garlic' }];
     return (
       <>
         <img
@@ -39,15 +89,16 @@ export default class TelaDeReceitaEmProgresso extends React.Component {
         <section>
           <h3>Ingredientes</h3>
           { ingredients.map((ingredient, index) => (
-            <div key={ ingredient }>
-              <label htmlFor={ ingredient }>
+            <div key={ ingredient.id }>
+              <label htmlFor={ ingredient.id }>
                 <input
-                  id={ ingredient }
+                  id={ ingredient.id }
+                  name={ ingredient.name }
                   type="checkbox"
                   onClick={ this.handleInput }
                   data-testid={ `${index}-ingredient-step` }
                 />
-                { ingredient }
+                { ingredient.name }
               </label>
             </div>
           )) }
