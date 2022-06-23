@@ -7,6 +7,9 @@ import TelaDeReceitas from './Components/TelaDeReceitas';
 import TelaDeBebidas from './Components/TelaDeBebidas';
 import Receita from './pages/Receita';
 import Bebidas from './pages/Bebidas';
+import Explore from './Components/Explore';
+import ExploreDrinks from './pages/ExploreDrinks';
+import ExploreFoods from './pages/ExploreFoods';
 
 function App() {
   return (
@@ -19,6 +22,9 @@ function App() {
         <Route exact path="/drinks" component={ TelaDeBebidas } />
         <Route exact path="/profile" component={ Profile } />
         <Route exact path="/favorite-recipes" component={ favoriteRecipes } />
+        <Route exact path="/explore" component={ Explore } />
+        <Route exact path="/explore/foods" component={ ExploreFoods } />
+        <Route exact path="/explore/drinks" component={ ExploreDrinks } />
       </Switch>
     </div>
   );
