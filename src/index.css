@@ -11,3 +11,8 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.start-recipe-btn {
+  bottom: 0;
+  position: fixed;
+}
