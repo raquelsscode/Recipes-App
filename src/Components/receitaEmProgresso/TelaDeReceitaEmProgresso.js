@@ -9,47 +9,61 @@ export default class TelaDeReceitaEmProgresso extends React.Component {
     super();
 
     this.state = {
-      // cocktails: {},
+      cocktails: {},
       meals: {},
     };
   }
 
+  handleLocalStorage = () => {
+    const { cocktails, meals } = this.state;
+    const inProgressRecipes = {
+      cocktails,
+      meals,
+    };
+    localStorage.setItem('inProgressRecipes', JSON.stringify(inProgressRecipes));
+  }
+
   saveMarkedIngredient = (ID, name) => {
-    console.log(ID);
     this.setState((prevState) => ({
       meals: {
         ...prevState.meals,
         [ID]: [...prevState.meals[ID], name],
       },
-    }));
+    }), this.handleLocalStorage);
   }
 
   handleInput = ({ target }) => {
-    // const inProgressRecipesObj = JSON.parse(localStorage.getItem('inProgressRecipes'));
     target.parentNode.classList.toggle('markedIngredient');
 
     const ID = 52772;
     const { name } = target;
     const { meals } = this.state;
 
-    if (!meals[ID]) {
-      this.setState(({
-        meals: { [ID]: [] },
-      }), () => {
+    if (target.checked) {
+      if (!meals[ID]) {
+        this.setState(({
+          meals: { [ID]: [] },
+        }), () => {
+          this.saveMarkedIngredient(ID, name);
+        });
+      } else {
         this.saveMarkedIngredient(ID, name);
-      });
+      }
     } else {
-      this.saveMarkedIngredient(ID, name);
+      this.setState((prevState) => ({
+        meals: {
+          ...prevState.meals,
+          [ID]: meals[ID].filter((ingredient) => ingredient !== name),
+        },
+      }), this.handleLocalStorage);
     }
   }
 
   componentDidMount = () => {
     if (!localStorage.getItem('inProgressRecipes')) {
       const inProgressRecipes = {
-        cocktails: {
-        },
-        meals: {
-        },
+        cocktails: {},
+        meals: {},
       };
 
       localStorage.setItem('inProgressRecipes', JSON.stringify(inProgressRecipes));
