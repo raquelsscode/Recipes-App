@@ -1,21 +1,32 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
+import copy from 'clipboard-copy';
 import { getDrinkById } from '../services/TestApi';
+import RecipesContext from '../context/RecipesContext';
+import BlackHeartIcon from '../images/blackHeartIcon.svg';
+import WhiteHeartIcon from '../images/whiteHeartIcon.svg';
 
 function DetailsDrinks() {
   const history = useHistory();
   const { location } = history;
   const POS_IN_PATHNAME = 3;
   const ARR_POS = 2;
+  const MEAL_LIMITER = 6;
   const id = location.pathname.split('/', POS_IN_PATHNAME)[ARR_POS];
+
+  const [fav, setFav] = useState(false);
   const [drink, setDrink] = useState({});
   const [toRender, setToRender] = useState(false);
+
   const ingredients = [];
   const measure = [];
+
+  const { foodRandom, data } = useContext(RecipesContext);
 
   useEffect(() => {
     getDrinkById(id).then(({ drinks }) => {
       setDrink(drinks[0]);
+      foodRandom();
       setToRender(true);
     });
   }, []);
@@ -37,6 +48,20 @@ function DetailsDrinks() {
     history.push(`/drinks/${id}/in-progress`);
   };
 
+  const share = (e) => {
+    e.target.innerText = 'Link copied!!';
+    copy(`http://localhost:3000${location.pathname}`);
+  };
+
+  const favorite = () => {
+    if (fav) {
+      document.getElementById('fav').src = WhiteHeartIcon;
+    } else {
+      document.getElementById('fav').src = BlackHeartIcon;
+    }
+    setFav(!fav);
+  };
+
   return toRender && (
     <div>
       <h1 data-testid="recipe-title">{ drink.strDrink }</h1>
@@ -45,10 +70,24 @@ function DetailsDrinks() {
         src={ drink.strDrinkThumb }
         data-testid="recipe-photo"
         alt={ drink.strdrink }
+        className="img-detail"
       />
       <div className="group-buttons">
-        <button type="button" data-testid="share-btn">Compartilhar</button>
-        <button type="button" data-testid="favorite-btn">Favoritar</button>
+        <button
+          onClick={ (e) => share(e) }
+          type="button"
+          data-testid="share-btn"
+        >
+          Compartilhar
+        </button>
+        <button onClick={ () => favorite() } type="button">
+          <img
+            id="fav"
+            src={ WhiteHeartIcon }
+            alt="favoritar"
+            data-testid="favorite-btn"
+          />
+        </button>
       </div>
       <h3>Lista de Ingredientes:</h3>
       <ul>
@@ -70,12 +109,26 @@ function DetailsDrinks() {
       </button>
       <h3>Receitas Recomendadas</h3>
       <div className="caroussel">
-        <section data-testid="0-recomendation-card">Oi</section>
-        <section data-testid="1-recomendation-card">Oi</section>
-        <section data-testid="2-recomendation-card">Oi</section>
-        <section data-testid="3-recomendation-card">Oi</section>
-        <section data-testid="4-recomendation-card">Oi</section>
-        <section data-testid="5-recomendation-card">Oi</section>
+        { data.food.map((f, i) => (
+          i < MEAL_LIMITER && (
+            <section
+              key={ i }
+              data-testid={ `${i}-recomendation-card` }
+              className="card"
+            >
+              <h3
+                data-testid={ `${i}-recomendation-title` }
+              >
+                { f.strMeal }
+              </h3>
+              <img
+                data-testid={ `${i}-card-img` }
+                src={ f.strMealThumb }
+                alt={ f.strMeal }
+              />
+            </section>
+          )
+        ))}
       </div>
     </div>
   );

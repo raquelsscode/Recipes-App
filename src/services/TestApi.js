@@ -9,6 +9,9 @@ const endPointDrinkFirstLetter = 'https://www.thecocktaildb.com/api/json/v1/1/se
 const endPointFoodById = 'https://www.themealdb.com/api/json/v1/1/lookup.php?i=';
 const endPointDrinkById = 'https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=';
 
+const endPointFoodRandom = 'https://www.themealdb.com/api/json/v1/1/search.php?s=';
+const endPointDrinkRandom = 'https://www.thecocktaildb.com/api/json/v1/1/search.php?s=';
+
 const returnAlert = () => {
   alert('Sinto muito, não encontramos nenhuma receita para esses filtros.');
   return null;
@@ -63,3 +66,15 @@ export const getDrinkById = async (id) => (
     .then((response) => response.json())
     .then((drink) => drink)
 );
+
+export const getFoodRandom = async () => {
+  const results = await fetch(endPointFoodRandom).then((res) => res.json());
+  const { meals } = results;
+  return meals;
+};
+
+export const getDrinkRandom = async () => {
+  const results = await fetch(endPointDrinkRandom).then((res) => res.json());
+  const { drinks } = results;
+  return drinks;
+};

@@ -16,3 +16,47 @@ code {
   bottom: 0;
   position: fixed;
 }
+
+.img-detail {
+  margin: 0 auto;
+  max-width: 300px;
+}
+
+.card {
+  border-radius: 15px;
+  box-shadow: 0 2px 8px rgba(25, 30, 50, 0.25);
+  height: 250px;
+  margin: 15px auto;
+  max-width: 300px;
+  overflow: hidden;
+}
+
+.card img {
+  width: 300px;
+}
+
+.card h3 {
+  padding: 10px;
+}
+
+.caroussel {
+  display: flex;
+  margin: 0 auto;
+  max-width: 325px;
+  overflow-x: auto;
+}
+
+.caroussel .card {
+  height: 125px;
+  margin-right: 25px;
+  min-width: 150px;
+}
+
+.caroussel .card h3 {
+  font-size: 25px;
+  padding: 10px 0 0 10px;
+}
+
+.caroussel .card img {
+  width: 150px;
+}
