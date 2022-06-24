@@ -16,11 +16,10 @@ class ExploreIngredients extends React.Component {
   getIngredient = async () => {
     const maxIngredients = 12;
     const data = await requestIngredient('Salt');
-    console.log(data);
-    this.setState = {
-      ingredients: data.slice(0, maxIngredients),
-    };
-    return data.slice(0, maxIngredients);
+    this.setState({
+      ingredients: data.meals.slice(0, maxIngredients),
+    });
+    return data.meals.slice(0, maxIngredients);
   }
 
   render() {
