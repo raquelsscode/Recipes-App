@@ -1,15 +1,15 @@
-import { USER_EMAIL } from '../actions';
+import { INGREDIENT_NAME } from '../actions';
 
 const INITIAL_STATE = {
-  email: 'email-da-pessoa',
+  ingredientName: '',
 };
 
 const reducerInicial = (state = INITIAL_STATE, action) => {
   switch (action.type) {
-  case USER_EMAIL:
+  case INGREDIENT_NAME:
     return {
       ...state,
-      email: action.payload.emailString,
+      ingredientName: action.payload.choosed,
     };
   default:
     return state;

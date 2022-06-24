@@ -1,6 +1,6 @@
-export const USER_EMAIL = 'USER_EMAIL';
+export const INGREDIENT_NAME = 'INGREDIENT_NAME';
 
-export const userEmail = (payload) => ({
-  type: USER_EMAIL,
+export const ingredientName = (payload) => ({
+  type: INGREDIENT_NAME,
   payload,
 });
