@@ -10,6 +10,7 @@ import Bebidas from './pages/Bebidas';
 import Explore from './Components/Explore';
 import ExploreDrinks from './pages/ExploreDrinks';
 import ExploreFoods from './pages/ExploreFoods';
+import ExploreIngredients from './Components/ExploreIngredients';
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
         <Route exact path="/explore" component={ Explore } />
         <Route exact path="/explore/foods" component={ ExploreFoods } />
         <Route exact path="/explore/drinks" component={ ExploreDrinks } />
+        <Route exact path="/explore/foods/ingredients" component={ ExploreIngredients } />
       </Switch>
     </div>
   );
