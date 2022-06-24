@@ -8,7 +8,7 @@ import whiteHeartIcon from '../images/whiteHeartIcon.svg';
 import blackHeartIcon from '../images/blackHeartIcon.svg';
 import './ProgressFood.css';
 
-export default class TelaDeReceitaEmProgresso extends React.Component {
+export default class ProgressFood extends React.Component {
   constructor() {
     super();
 
@@ -16,6 +16,7 @@ export default class TelaDeReceitaEmProgresso extends React.Component {
       cocktails: {},
       meals: {},
       mealsIngredients: [],
+      // usedIngredients: [],
       mealImg: '',
       mealTitle: '',
       mealCategory: '',
@@ -30,6 +31,7 @@ export default class TelaDeReceitaEmProgresso extends React.Component {
       cocktails,
       meals,
     };
+    console.log(inProgressRecipes);
     localStorage.setItem('inProgressRecipes', JSON.stringify(inProgressRecipes));
   }
 
@@ -44,26 +46,28 @@ export default class TelaDeReceitaEmProgresso extends React.Component {
 
   handleInput = ({ target }) => {
     target.parentNode.classList.toggle('markedIngredient');
-
-    const ID = 52772;
+    const { match: { params: { id } } } = this.props;
     const { name } = target;
     const { meals } = this.state;
 
     if (target.checked) {
-      if (!meals[ID]) {
-        this.setState(({
-          meals: { [ID]: [] },
+      if (!meals[id]) {
+        this.setState((prevState) => ({
+          meals: {
+            ...prevState.meals,
+            [id]: [],
+          },
         }), () => {
-          this.saveMarkedIngredient(ID, name);
+          this.saveMarkedIngredient(id, name);
         });
       } else {
-        this.saveMarkedIngredient(ID, name);
+        this.saveMarkedIngredient(id, name);
       }
     } else {
       this.setState((prevState) => ({
         meals: {
           ...prevState.meals,
-          [ID]: meals[ID].filter((ingredient) => ingredient !== name),
+          [id]: meals[id].filter((ingredient) => ingredient !== name),
         },
       }), this.handleLocalStorage);
     }
@@ -88,36 +92,36 @@ export default class TelaDeReceitaEmProgresso extends React.Component {
     this.setState((prevState) => ({ fav: !prevState.fav }));
   };
 
-  componentDidMount = async () => {
+  prepareIngredients = async () => {
     const { match: { params: { id } } } = this.props;
 
     const idNumber = Number(id);
 
     const food = await requestFoodById(idNumber);
 
-    console.log(food);
-
     const { meals } = food;
 
-    const measure = [];
+    const ingredients = [];
     const PROPS_LIMITER = 20;
 
     for (let i = 1; i <= PROPS_LIMITER; i += 1) {
       if (meals[0][`strIngredient${i}`] !== null
         && meals[0][`strIngredient${i}`] !== undefined
         && meals[0][`strIngredient${i}`] !== '') {
-        measure.push(meals[0][`strIngredient${i}`]);
+        ingredients.push(meals[0][`strIngredient${i}`]);
       }
     }
 
     this.setState({
-      mealsIngredients: measure,
+      mealsIngredients: ingredients,
       mealImg: meals[0].strMealThumb,
       mealTitle: meals[0].strMeal,
       mealCategory: meals[0].strCategory,
       instructions: meals[0].strInstructions,
     });
+  }
 
+  setLocalStorage = () => {
     if (!localStorage.getItem('inProgressRecipes')) {
       const inProgressRecipes = {
         cocktails: {},
@@ -125,12 +129,35 @@ export default class TelaDeReceitaEmProgresso extends React.Component {
       };
 
       localStorage.setItem('inProgressRecipes', JSON.stringify(inProgressRecipes));
+    } else {
+      const localStorageItens = localStorage.getItem('inProgressRecipes');
+      const localStorageItensObj = JSON.parse(localStorageItens);
+
+      this.setState({
+        meals: localStorageItensObj.meals,
+      });
     }
+  }
+
+  // verifyCheckedIngredients = (ingredient) => {
+  //   const { match: { params: { id } } } = this.props;
+  //   const { meals } = this.state;
+  //   let checked = false;
+  //   if (meals[id]) {
+  //     checked = meals[id].some((name) => name === ingredient);
+  //   }
+  //   return checked;
+  // }
+
+  componentDidMount = () => {
+    this.setLocalStorage();
+    this.prepareIngredients();
   }
 
   render() {
     const {
-      mealsIngredients, mealImg, mealTitle, mealCategory, instructions } = this.state;
+      mealsIngredients,
+      mealImg, mealTitle, mealCategory, instructions } = this.state;
     return (
       <>
         <img
@@ -170,18 +197,18 @@ export default class TelaDeReceitaEmProgresso extends React.Component {
           <h3>Ingredientes</h3>
           { mealsIngredients.map((ingredient, index) => (
             <div key={ index }>
-              <label htmlFor={ ingredient }>
+              <label htmlFor={ ingredient } data-testid="ingredient-step">
                 <input
                   id={ ingredient }
                   name={ ingredient }
                   type="checkbox"
-                  onClick={ this.handleInput }
-                  data-testid={ `${index}-ingredient-step` }
+                  onChange={ this.handleInput }
                 />
                 { ingredient }
               </label>
             </div>
           )) }
+
         </section>
 
         <section data-testid="instructions">
@@ -203,7 +230,7 @@ export default class TelaDeReceitaEmProgresso extends React.Component {
   }
 }
 
-TelaDeReceitaEmProgresso.propTypes = {
+ProgressFood.propTypes = {
   match: PropTypes.shape({
     params: PropTypes.shape({
       id: PropTypes.string,

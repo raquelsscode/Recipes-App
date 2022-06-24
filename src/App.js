@@ -6,15 +6,13 @@ import RecipesProvider from './context/RecipesProvider';
 import favoriteRecipes from './pages/favoriteRecipes';
 import TelaDeReceitas from './Components/TelaDeReceitas';
 import TelaDeBebidas from './Components/TelaDeBebidas';
-import Receita from './pages/Receita';
-import Bebidas from './pages/Bebidas';
 import Explore from './Components/Explore';
 import ExploreDrinks from './pages/ExploreDrinks';
 import ExploreFoods from './pages/ExploreFoods';
 import ExploreIngredients from './Components/ExploreIngredients';
 import DetailsFoods from './pages/DetailsFoods';
 import DetailsDrinks from './pages/DetailsDrinks';
-import ProgressoComida from './pages/ProgressFood';
+import ProgressFood from './pages/ProgressFood';
 import ProgressoBebida from './pages/ProgressDrink';
 
 function App() {
@@ -23,8 +21,6 @@ function App() {
       <RecipesProvider>
         <Switch>
           <Route exact path="/foods" component={ TelaDeReceitas } />
-          <Route exact path="/foods/:id" component={ Receita } />
-          <Route exact path="/drinks/:id" component={ Bebidas } />
           <Route exact path="/" component={ Login } />
           <Route exact path="/drinks" component={ TelaDeBebidas } />
           <Route exact path="/profile" component={ Profile } />
@@ -37,9 +33,9 @@ function App() {
             path="/explore/foods/ingredients"
             component={ ExploreIngredients }
           />
-          <Route path="/foods/:id" component={ DetailsFoods } />
-          <Route path="/drinks/:id" component={ DetailsDrinks } />
-          <Route exact path="/foods/:id/in-progress" component={ ProgressoComida } />
+          <Route exact path="/foods/:id" component={ DetailsFoods } />
+          <Route exact path="/drinks/:id" component={ DetailsDrinks } />
+          <Route exact path="/foods/:id/in-progress" component={ ProgressFood } />
           <Route exact path="/drinks/:id/in-progress" component={ ProgressoBebida } />
         </Switch>
       </RecipesProvider>
