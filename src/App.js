@@ -7,14 +7,17 @@ import TelaDeReceitas from './Components/TelaDeReceitas';
 import TelaDeBebidas from './Components/TelaDeBebidas';
 import Receita from './pages/Receita';
 import Bebidas from './pages/Bebidas';
-import TelaDeReceitaEmProgresso
-from './Components/receitaEmProgresso/TelaDeReceitaEmProgresso';
+import ProgressFood from './pages/ProgressFood';
 
 function App() {
   return (
     <div>
       <Switch>
-        <Route exact path="/receitaemprogresso" component={ TelaDeReceitaEmProgresso } />
+        <Route
+          exact
+          path="/foods/:id/in-progress"
+          component={ ProgressFood }
+        />
         <Route exact path="/foods" component={ TelaDeReceitas } />
         <Route exact path="/foods/:id" component={ Receita } />
         <Route exact path="/drinks/:id" component={ Bebidas } />
