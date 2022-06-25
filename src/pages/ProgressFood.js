@@ -3,25 +3,27 @@ import PropTypes from 'prop-types';
 import Button from 'react-bootstrap/Button';
 import copy from 'clipboard-copy';
 import { requestFoodById } from '../services/RequestAPI';
-import shareIcon from '../images/shareIcon.svg';
+// import shareIcon from '../images/shareIcon.svg';
 import whiteHeartIcon from '../images/whiteHeartIcon.svg';
 import blackHeartIcon from '../images/blackHeartIcon.svg';
 import './ProgressFood.css';
+import InputIngredient from '../Components/InputIngredient';
 
 export default class ProgressFood extends React.Component {
   constructor() {
     super();
 
     this.state = {
+      mealID: 0,
       cocktails: {},
       meals: {},
       mealsIngredients: [],
-      // usedIngredients: [],
       mealImg: '',
       mealTitle: '',
       mealCategory: '',
       instructions: '',
       fav: false,
+      isFinishButtonDisabled: true,
     };
   }
 
@@ -31,7 +33,6 @@ export default class ProgressFood extends React.Component {
       cocktails,
       meals,
     };
-    console.log(inProgressRecipes);
     localStorage.setItem('inProgressRecipes', JSON.stringify(inProgressRecipes));
   }
 
@@ -44,13 +45,12 @@ export default class ProgressFood extends React.Component {
     }), this.handleLocalStorage);
   }
 
-  handleInput = ({ target }) => {
-    target.parentNode.classList.toggle('markedIngredient');
+  handleInput = (node, name, checked) => {
+    node.classList.toggle('markedIngredient');
     const { match: { params: { id } } } = this.props;
-    const { name } = target;
     const { meals } = this.state;
 
-    if (target.checked) {
+    if (checked) {
       if (!meals[id]) {
         this.setState((prevState) => ({
           meals: {
@@ -74,7 +74,6 @@ export default class ProgressFood extends React.Component {
   }
 
   share = (e) => {
-    console.log(this.props);
     const { location } = this.props;
     e.target.innerText = 'Link copied!';
     copy(`http://localhost:3000${location.pathname}`);
@@ -85,9 +84,7 @@ export default class ProgressFood extends React.Component {
     if (fav) {
       document.getElementById('fav').src = whiteHeartIcon;
     } else {
-      console.log('false');
       document.getElementById('fav').src = blackHeartIcon;
-      console.log(document.getElementById('fav'));
     }
     this.setState((prevState) => ({ fav: !prevState.fav }));
   };
@@ -113,6 +110,7 @@ export default class ProgressFood extends React.Component {
     }
 
     this.setState({
+      mealID: id,
       mealsIngredients: ingredients,
       mealImg: meals[0].strMealThumb,
       mealTitle: meals[0].strMeal,
@@ -139,15 +137,18 @@ export default class ProgressFood extends React.Component {
     }
   }
 
-  // verifyCheckedIngredients = (ingredient) => {
-  //   const { match: { params: { id } } } = this.props;
-  //   const { meals } = this.state;
-  //   let checked = false;
-  //   if (meals[id]) {
-  //     checked = meals[id].some((name) => name === ingredient);
-  //   }
-  //   return checked;
-  // }
+  isFinished = (allIngredients, ingredientsChecked) => {
+    if (allIngredients === ingredientsChecked) {
+      this.setState({ isFinishButtonDisabled: false });
+    } else {
+      this.setState({ isFinishButtonDisabled: true });
+    }
+  }
+
+  finishRecipe = () => {
+    const { history } = this.props;
+    history.push('/done-recipes');
+  }
 
   componentDidMount = () => {
     this.setLocalStorage();
@@ -157,13 +158,16 @@ export default class ProgressFood extends React.Component {
   render() {
     const {
       mealsIngredients,
-      mealImg, mealTitle, mealCategory, instructions } = this.state;
+      mealImg,
+      mealTitle,
+      mealCategory, instructions, mealID, isFinishButtonDisabled } = this.state;
     return (
       <>
         <img
           src={ mealImg }
           data-testid="recipe-photo"
           alt="Prototipo"
+          className="img-detail"
         />
 
         <div className="wrapperTitleButton">
@@ -177,7 +181,7 @@ export default class ProgressFood extends React.Component {
               data-testid="share-btn"
               onClick={ this.share }
             >
-              <img src={ shareIcon } alt="share button" />
+              Compartilhar
             </button>
 
             <button
@@ -196,17 +200,14 @@ export default class ProgressFood extends React.Component {
         <section>
           <h3>Ingredientes</h3>
           { mealsIngredients.map((ingredient, index) => (
-            <div key={ index }>
-              <label htmlFor={ ingredient } data-testid="ingredient-step">
-                <input
-                  id={ ingredient }
-                  name={ ingredient }
-                  type="checkbox"
-                  onChange={ this.handleInput }
-                />
-                { ingredient }
-              </label>
-            </div>
+            <InputIngredient
+              key={ index }
+              handleInput={ this.handleInput }
+              finish={ this.isFinished }
+              ingredient={ ingredient }
+              mealId={ mealID }
+              index={ index }
+            />
           )) }
 
         </section>
@@ -222,6 +223,8 @@ export default class ProgressFood extends React.Component {
           variant="success"
           type="button"
           data-testid="finish-recipe-btn"
+          onClick={ this.finishRecipe }
+          disabled={ isFinishButtonDisabled }
         >
           Finish Recipe
         </Button>
@@ -236,4 +239,5 @@ ProgressFood.propTypes = {
       id: PropTypes.string,
     }) }).isRequired,
   location: PropTypes.shape().isRequired,
+  history: PropTypes.shape({ push: PropTypes.func.isRequired }).isRequired,
 };
