@@ -7,7 +7,10 @@ class InputIngredient extends React.Component {
 
     this.state = {
       checked: false,
+      localstorage: [],
     };
+
+    this.myRef = React.createRef();
   }
 
   inputChange = ({ target }) => {
@@ -33,40 +36,41 @@ class InputIngredient extends React.Component {
 
   componentDidMount = () => {
     const { mealId, ingredient } = this.props;
-    const localStorageItens = localStorage.getItem('inProgressRecipes');
-    const localStorageItensObj = JSON.parse(localStorageItens);
+    const localStorageItensObj = JSON
+      .parse(localStorage.getItem('inProgressRecipes')) || { meals: {} };
 
     if (localStorageItensObj.meals[mealId]) {
-      const isChecked = localStorageItensObj.meals[mealId]
-        .some((element) => element === ingredient);
-      if (isChecked) {
-        this.setState({ checked: isChecked });
-        const LABELS = document.querySelectorAll('label');
-
-        LABELS.forEach((item) => {
-          if (item.innerText === ingredient) {
-            item.classList.add('markedIngredient');
-          }
+      this.setState({ localstorage: localStorageItensObj.meals[mealId] }, () => {
+        const { localstorage } = this.state;
+        this.setState({
+          checked: localstorage.some((item) => item === ingredient),
         });
-      }
+      });
     }
-    // this.isAllChecked();
-    // const INPUTS = document.querySelectorAll('input');
-    // console.log(INPUTS[0].checked);
+    const node = this.myRef.current;
+    // console.log(node);
+    if (node.firstChild.checked) {
+      node.classList.add('markedIngredient');
+    }
   }
 
   render() {
     const { ingredient, index } = this.props;
     const { checked } = this.state;
+    console.log(checked);
     return (
       <div>
-        <label htmlFor={ ingredient } data-testid={ `${index}-ingredient-step` }>
+        <label
+          htmlFor={ ingredient }
+          data-testid={ `${index}-ingredient-step` }
+          ref={ this.myRef }
+        >
           <input
             id={ ingredient }
             name={ ingredient }
             type="checkbox"
             onChange={ this.inputChange }
-            checked={ checked }
+            checked={ checked ? ingredient : false }
           />
           { ingredient }
         </label>
