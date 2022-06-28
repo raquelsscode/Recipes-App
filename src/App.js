@@ -15,6 +15,8 @@ import DetailsDrinks from './pages/DetailsDrinks';
 import ProgressoComida from './pages/ProgressFood';
 import ProgressoBebida from './pages/ProgressDrink';
 import ExploreIngredientsDrinks from './pages/ExploreIngredientsDrinks';
+import ExploreByNationalitesFoods from './pages/ExploreByNationalitesFoods';
+import NotFound from './pages/NotFound';
 
 function App() {
   return (
@@ -43,6 +45,12 @@ function App() {
             path="/explore/drinks/ingredients"
             component={ ExploreIngredientsDrinks }
           />
+          <Route
+            exact
+            path="/explore/foods/nationalities"
+            component={ ExploreByNationalitesFoods }
+          />
+          <Route exact path="/explore/drinks/nationalities" component={ NotFound } />
         </Switch>
       </RecipesProvider>
     </Router>
