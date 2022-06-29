@@ -5,8 +5,8 @@ import copy from 'clipboard-copy';
 import { requestFoodById } from '../services/RequestAPI';
 // import shareIcon from '../images/shareIcon.svg';
 import whiteHeartIcon from '../images/whiteHeartIcon.svg';
-import blackHeartIcon from '../images/blackHeartIcon.svg';
-import './ProgressFood.css';
+// import blackHeartIcon from '../images/blackHeartIcon.svg';
+import './Progress.css';
 import InputIngredient from '../Components/InputIngredient';
 
 export default class ProgressFood extends React.Component {
@@ -22,18 +22,25 @@ export default class ProgressFood extends React.Component {
       mealTitle: '',
       mealCategory: '',
       instructions: '',
-      fav: false,
+      // fav: false,
       isFinishButtonDisabled: true,
+      qtdCheckbox: 0,
     };
   }
 
   handleLocalStorage = () => {
-    const { cocktails, meals } = this.state;
+    const { cocktails, meals, qtdCheckbox, mealsIngredients } = this.state;
     const inProgressRecipes = {
       cocktails,
       meals,
     };
     localStorage.setItem('inProgressRecipes', JSON.stringify(inProgressRecipes));
+
+    if (qtdCheckbox === mealsIngredients.length) {
+      this.setState({ isFinishButtonDisabled: false });
+    } else {
+      this.setState({ isFinishButtonDisabled: true });
+    }
   }
 
   saveMarkedIngredient = (ID, name) => {
@@ -45,12 +52,14 @@ export default class ProgressFood extends React.Component {
     }), this.handleLocalStorage);
   }
 
-  handleInput = (node, name, checked) => {
-    node.classList.toggle('markedIngredient');
+  handleInput = ({ target }) => {
+    target.parentNode.classList.toggle('markedIngredient');
     const { match: { params: { id } } } = this.props;
     const { meals } = this.state;
+    const { name, checked } = target;
 
     if (checked) {
+      this.setState((prevState) => ({ qtdCheckbox: prevState.qtdCheckbox + 1 }));
       if (!meals[id]) {
         this.setState((prevState) => ({
           meals: {
@@ -64,6 +73,7 @@ export default class ProgressFood extends React.Component {
         this.saveMarkedIngredient(id, name);
       }
     } else {
+      this.setState((prevState) => ({ qtdCheckbox: prevState.qtdCheckbox - 1 }));
       this.setState((prevState) => ({
         meals: {
           ...prevState.meals,
@@ -74,19 +84,10 @@ export default class ProgressFood extends React.Component {
   }
 
   share = (e) => {
-    const { location } = this.props;
+    const { location, match: { params: { id } } } = this.props;
+    console.log(location);
     e.target.innerText = 'Link copied!';
-    copy(`http://localhost:3000${location.pathname}`);
-  };
-
-  favorite = () => {
-    const { fav } = this.state;
-    if (fav) {
-      document.getElementById('fav').src = whiteHeartIcon;
-    } else {
-      document.getElementById('fav').src = blackHeartIcon;
-    }
-    this.setState((prevState) => ({ fav: !prevState.fav }));
+    copy(`http://localhost:3000/foods/${id}`);
   };
 
   prepareIngredients = async () => {
@@ -128,20 +129,12 @@ export default class ProgressFood extends React.Component {
 
       localStorage.setItem('inProgressRecipes', JSON.stringify(inProgressRecipes));
     } else {
-      const localStorageItens = localStorage.getItem('inProgressRecipes');
-      const localStorageItensObj = JSON.parse(localStorageItens);
+      const localStorageItensObj = JSON.parse(localStorage.getItem('inProgressRecipes'));
 
       this.setState({
         meals: localStorageItensObj.meals,
+        cocktails: localStorageItensObj.cocktails,
       });
-    }
-  }
-
-  isFinished = (allIngredients, ingredientsChecked) => {
-    if (allIngredients === ingredientsChecked) {
-      this.setState({ isFinishButtonDisabled: false });
-    } else {
-      this.setState({ isFinishButtonDisabled: true });
     }
   }
 
@@ -160,7 +153,7 @@ export default class ProgressFood extends React.Component {
       mealsIngredients,
       mealImg,
       mealTitle,
-      mealCategory, instructions, mealID, isFinishButtonDisabled } = this.state;
+      mealCategory, instructions, mealID, isFinishButtonDisabled, meals } = this.state;
     return (
       <>
         <img
@@ -207,6 +200,8 @@ export default class ProgressFood extends React.Component {
               ingredient={ ingredient }
               mealId={ mealID }
               index={ index }
+              checked={ meals[mealID] && meals[mealID]
+                .some((item) => item === ingredient) }
             />
           )) }
 
