@@ -71,7 +71,7 @@ export default class TelaDeReceitas extends Component {
       const { foodsArr, categoryArr } = this.state;
       return (
         <div>
-          <Header />
+          <Header title="Foods" btnSearch="true" />
 
           <button
             data-testid="All-category-filter"

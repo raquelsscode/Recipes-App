@@ -1,4 +1,6 @@
 import React from 'react';
+import Header from '../Components/Header';
+import Footer from '../Components/footer/Footer';
 
 class ExploreIngredientsDrinks extends React.Component {
   constructor() {
@@ -31,6 +33,7 @@ render() {
   const { ingredientsDrinks } = this.state;
   return (
     <div>
+      <Header title="Explore Ingredients" btnSearch="false" />
       {ingredientsDrinks.map((ingredientDrink, index) => (
         <div key={ index } data-testid={ `${index}-ingredient-card` }>
           <img
@@ -44,6 +47,7 @@ render() {
           </p>
         </div>
       ))}
+      <Footer />
     </div>
   );
 }

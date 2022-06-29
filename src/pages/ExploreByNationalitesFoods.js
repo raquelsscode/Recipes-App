@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import requestFoods, { requestCategorys } from '../services/RequestAPI';
+import Header from '../Components/Header';
+import Footer from '../Components/footer/Footer';
 
 class ExploreByNationalitesFoods extends React.Component {
   constructor() {
@@ -103,39 +105,41 @@ class ExploreByNationalitesFoods extends React.Component {
        recipesFoods } = this.state;
      const { history } = this.props;
      return (
-       <form>
-         <select
-           data-testid="explore-by-nationality-dropdown"
-           onChange={ this.handleChange }
-         >
-           <option>Selecione uma nacionalidade</option>
-           <option data-testid="All-option">All</option>
-           { nationaliteFoods.map((nationality, index) => (
-             <option
-               key={ index }
-               data-testid={ `${nationality.strArea}-option` }
-               value={ `${nationality.strArea}` }
-             >
-               { nationality.strArea }
-             </option>
-           )) }
-         </select>
-         <select
-           onChange={ this.handleChange }
-         >
-           <option>Selecione uma categoria</option>
-           { setCategory.map((categories, i) => (
-             <option
-               key={ i }
-               data-testid={ `${categories.strCategory}-option` }
-               value={ `${categories.strCategory}` }
-             >
-               { categories.strCategory }
-             </option>
-           )) }
-         </select>
+       <div>
+         <Header title="Explore Nationalities" btnSearch="true" />
+         <form>
+           <select
+             data-testid="explore-by-nationality-dropdown"
+             onChange={ this.handleChange }
+           >
+             <option>Selecione uma nacionalidade</option>
+             <option data-testid="All-option">All</option>
+             { nationaliteFoods.map((nationality, index) => (
+               <option
+                 key={ index }
+                 data-testid={ `${nationality.strArea}-option` }
+                 value={ `${nationality.strArea}` }
+               >
+                 { nationality.strArea }
+               </option>
+             )) }
+           </select>
+           <select
+             onChange={ this.handleChange }
+           >
+             <option>Selecione uma categoria</option>
+             { setCategory.map((categories, i) => (
+               <option
+                 key={ i }
+                 data-testid={ `${categories.strCategory}-option` }
+                 value={ `${categories.strCategory}` }
+               >
+                 { categories.strCategory }
+               </option>
+             )) }
+           </select>
 
-         { filterDisabled === false && recipesFoods !== undefined
+           { filterDisabled === false && recipesFoods !== undefined
             && recipesFoods.map((recipeFood, index) => (
               <div key={ index } data-testid={ `${index}-recipe-card` }>
                 <button
@@ -158,7 +162,7 @@ class ExploreByNationalitesFoods extends React.Component {
               </div>
             )) }
 
-         {nationaliteFilter.name !== undefined
+           {nationaliteFilter.name !== undefined
             && filterDisabled && filterFoods.length > 0
             && filterFoods.map((filterFood, ind) => (
               <div key={ ind } data-testid={ `${ind}-recipe-card` }>
@@ -174,7 +178,9 @@ class ExploreByNationalitesFoods extends React.Component {
               </div>
             ))}
 
-       </form>
+         </form>
+         <Footer />
+       </div>
      );
    }
 }

@@ -1,5 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import Header from '../Components/Header';
+import Footer from '../Components/footer/Footer';
 
 class ExploreDrinks extends React.Component {
   redirectForIngredient = (event) => {
@@ -21,6 +23,7 @@ class ExploreDrinks extends React.Component {
   render() {
     return (
       <div>
+        <Header title="Explore Drinks" btnSearch="false" />
         <button
           type="button"
           data-testid="explore-by-ingredient"
@@ -35,6 +38,7 @@ class ExploreDrinks extends React.Component {
         >
           Surprise me!
         </button>
+        <Footer />
       </div>
     );
   }

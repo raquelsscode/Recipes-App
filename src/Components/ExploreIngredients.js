@@ -2,6 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { ingredientName } from '../redux/actions/index';
+import Header from './Header';
+import Footer from './footer/Footer';
 
 class ExploreIngredients extends React.Component {
   constructor() {
@@ -53,6 +55,7 @@ class ExploreIngredients extends React.Component {
     console.log(choosed);
     return (
       <div>
+        <Header title="Explore Ingredients" btnSearch="false" />
         {ingredients.map((ingredient, index) => (
           <div
             key={ index }
@@ -76,6 +79,7 @@ class ExploreIngredients extends React.Component {
             </p>
           </div>
         ))}
+        <Footer />
       </div>
     );
   }

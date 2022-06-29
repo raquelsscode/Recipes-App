@@ -1,5 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import Header from '../Components/Header';
+import Footer from '../Components/footer/Footer';
 
 class Profile extends React.Component {
   redirectForFavoritesRecipes = (event) => {
@@ -25,6 +27,7 @@ class Profile extends React.Component {
     const userLocalStorage = JSON.parse(localStorage.getItem('user'));
     return (
       <div>
+        <Header title="Profile" btnSearch="false" />
         <p data-testid="profile-email">{userLocalStorage.email}</p>
         <button
           type="button"
@@ -49,6 +52,7 @@ class Profile extends React.Component {
         >
           Logout
         </button>
+        <Footer />
       </div>
 
     );
