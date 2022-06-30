@@ -10,7 +10,7 @@ export async function requestDrinks() {
   const data = await fetch(URL);
   const response = await data.json();
   return response;
-
+}
 
 export async function requestCategoryDrinks() {
   const URL = 'https://www.thecocktaildb.com/api/json/v1/1/list.php?c=list';
