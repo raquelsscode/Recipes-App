@@ -1,9 +1,14 @@
 import React from 'react';
+import Header from '../Components/Header';
 
 class favoriteRecipes extends React.Component {
   render() {
     return (
-      <span>aaaaa</span>
+      <div>
+        <Header title="Favorite Recipes" btnSearch="false" />
+        <span>aaaaa</span>
+      </div>
+
     );
   }
 }

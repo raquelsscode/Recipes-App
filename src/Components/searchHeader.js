@@ -43,9 +43,9 @@ class HeaderSearch extends Component {
       <form>
         <label htmlFor="Ingredient-search-radio">
           <input
+            data-testid="ingredient-search-radio"
             type="radio"
             id="Ingredient-search-radio"
-            data-testid="ingredient-search-radio"
             name="search-type"
             value="Ingredient"
             onClick={ this.handleClickRadio }
@@ -57,7 +57,7 @@ class HeaderSearch extends Component {
             type="radio"
             id="name-search-radio"
             name="search-type"
-            data-testeid="name-search-radio"
+            data-testid="name-search-radio"
             value="Name"
             onClick={ this.handleClickRadio }
           />
@@ -67,7 +67,7 @@ class HeaderSearch extends Component {
           <input
             type="radio"
             id="first-letter-search-radio"
-            data-testeid="first-letter-search-radio"
+            data-testid="first-letter-search-radio"
             name="search-type"
             value="First letter"
             onClick={ this.handleClickRadio }
@@ -77,6 +77,7 @@ class HeaderSearch extends Component {
         <input
           type="text"
           onChange={ this.handleChange }
+          data-testid="search-input"
         />
         <button
           type="button"

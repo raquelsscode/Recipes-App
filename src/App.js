@@ -10,6 +10,7 @@ import Explore from './Components/Explore';
 import ExploreDrinks from './pages/ExploreDrinks';
 import ExploreFoods from './pages/ExploreFoods';
 import ExploreIngredients from './Components/ExploreIngredients';
+import DoneRecipe from './pages/DoneRecipe';
 import DetailsFoods from './pages/DetailsFoods';
 import DetailsDrinks from './pages/DetailsDrinks';
 import ProgressFood from './pages/ProgressFood';
@@ -40,6 +41,7 @@ function App() {
           <Route exact path="/drinks/:id" component={ DetailsDrinks } />
           <Route exact path="/foods/:id/in-progress" component={ ProgressFood } />
           <Route exact path="/drinks/:id/in-progress" component={ ProgressoBebida } />
+          <Route exact path="/done-recipes" component={ DoneRecipe } />
           <Route
             exact
             path="/explore/drinks/ingredients"

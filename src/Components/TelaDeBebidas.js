@@ -76,8 +76,7 @@ export default class TelaDeBebidas extends Component {
       const { drinksArr, categoryArr } = this.state;
       return (
         <div>
-          <Header />
-
+          <Header title="Drinks" btnSearch="true" />
           <button
             data-testid="All-category-filter"
             type="button"
